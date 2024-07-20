@@ -39,7 +39,7 @@ nd_strcat_s(
         return (char *)ND_NULL;
     }
 
-    return dst;
+    return p -1;
 }
 
 #if !defined(BDDISASM_NO_FORMAT) && defined(BDDISASM_HAS_VSNPRINTF)

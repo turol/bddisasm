@@ -187,19 +187,25 @@ NdToText(
 {
     NDSTATUS status;
     char *res, temp[64];
+    char *bufferEnd;
+    ND_UINT32 bufferRemains;
     ND_UINT32 opIndex, opsStored;
     const ND_OPERAND *pOp;
     ND_BOOL alignmentStored;
 
 #define NDTOTEXT_APPEND(str)                         \
 {                                                    \
-    res = nd_strcat_s(Buffer, BufferSize, (str));    \
+    res = nd_strcat_s(bufferEnd, bufferRemains, (str)); \
     RET_EQ(res, ND_NULL, ND_STATUS_BUFFER_OVERFLOW); \
+    bufferRemains -= (res - bufferEnd);                 \
+    bufferEnd = res;                                    \
 }
 
     // pre-init
     status = ND_STATUS_SUCCESS;
     res = (char *)ND_NULL;
+    bufferEnd = Buffer;
+    bufferRemains = BufferSize;
     opIndex = 0;
     opsStored = 0;
     pOp = (const ND_OPERAND *)ND_NULL;
